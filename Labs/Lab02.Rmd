@@ -1,0 +1,112 @@
+---
+title: "36-315 Lab 02"
+author: "Your Name Here"
+date: "Due Friday, January 22, 2016 (6:30pm)"
+output: html_document
+---
+
+#  Lab 02:  1-Dimensional Categorical Data
+
+##  Analyzing Twitter Airline Sentiment Data with `ggplot`
+
+***General instructions for labs***: 
+
++  Use this file as the template for your lab submission.  Delete the unecessary text (e.g. this text, the problem statements, etc).  That said, keep the nicely formatted "Problem 1", "Problem 2", "a.", "b.", etc
++  Upload an `R` Markdown file (named as:  [AndrewID]-[Lab02].Rmd -- e.g. "sventura-Lab02.Rmd") to Blackboard in the Lab 02 submission section on Blackboard
++  Your file should contain the code/commands to answer each question in its own code block; your code should produce plots that will be automatically embedded in the output file
++  Each answer must be supported by written statements (unless otherwise specified)
++  Include the name of anyone you collaborated with at the top of the lab assignment
++  Do not worry about adhering to a particular style guide (yet) -- we will cover this on Homework 02
+
+
+Today's lab will help familiarize you with the `R` package `ggplot2`.  We'll use a dataset on Twitter users' sentiment towards airlines in the United States.  This dataset was obtained from Kaggle.
+
+
+#  Problem 1
+
+(10 points)
+
+**First Steps in Data Analysis**:  
+
+The first steps in any statistical analysis of real-world data are simple:
+
++  Load the data into `R` / RStudio
++  Get some basic information about the dataset -- number of rows, number of columns
++  Look at the first few rows of the dataset (e.g. with the `head()` function in `R`) and determine which variables are categorical and which are continuous
+
+Perform these steps for the Twitter Airline Sentiment dataset, which can be found here:  [link].  When reading in the data, assign it to a variable called `airline_tweets`
+
+How many rows and columns does the data have?  Which variables are categorical?  Which are continuous?  Which, if any, of the categorical variables are ordered?
+
+```{r}
+#  Put your code to answer these questions here!
+#  It's probably a good idea to start by loading ggplot2 library
+```
+
+
+
+#  Problem 2
+
+**Exploratory Data Analysis -- Part 1 -- Examining Categorical Variables**
+
+The next step in most statistical analyses involves doing an exploratory analysis the variables in your dataset.  We'll focus on the `airline_sentiment` and `airline` variables.  (Don't worry -- we'll analyze some of the other interesting variables later.)
+
+In `R`, the `$` operator extracts a variable from a `data.frame` (e.g. our `airline_tweets data.frame`):  
+
+Let's use this to see how many unique values of each variable there are.  We'll use the `unique()` function:  `unique(airline_tweets$airline)` and `unique(airline_tweets$airline_sentiment)`.  
+
+a.  (5 points)  How many unique values of these two variables are there?  What are the unique values?
+b.  (10 points)  How many of each unique value are there?  To find this out, use the `table()` function, which counts the number of times each category appears in a vector.
+
+
+#  Problem 3
+
+(5 points each)
+
+**Exploratory Data Analysis -- Part 2 -- Visualizing Cateogical Variables**
+
+Tables are great, but graphs are prettier.  Let's use `ggplot` to visualize the information we just obtained.
+
+When using `ggplot`, always specify the dataset that you're visualizing as the first argument.  Your plot is stored as an `R` object.  To display your plot, just type the object name at the command line (or in your `R` Markdown code block).
+
+We'll start with `airline` variable.  (Aside:  Notice that with `ggplot`, we don't need to use the `$` operator -- `ggplot` recognizes that the variables we refer to are in the dataset we specified with the `data` argument, so it does all of the work for us!)
+
+a.  Create a bar chart that shows the distribution of the number times was each airline mentioned in our `airline_tweets` dataset.  The x-axis should show the unique airlines.  The y-axis should show the frequency of that airline in the dataset.  To do this, create a base plot with:  `airline_dist_plot <- ggplot(data = airline_tweets, aes(x=airline))`.  Then type `airline_dist_plot + geom_bar(stat = "count") + coord_cartesian()`.  
+
+b.  That graph is okay, but let's add a little color.  Recall that in Lecture on Wednesday, color is part of the "aesthetics" of the graph.  So, all we need to do is add the color aesthetic to our previous command:  `airline_dist_plot + geom_bar(stat = "count") + coord_cartesian() + aes(fill = airline)`.  (This will `fill` the bars in with different colors corresponding to each unique `airline`.)  Notice that `ggplot` adds a legend to our plot automatically.  We'll learn about how to specify different colors on a future assignment.  That said, feel free to look up how to do this and change the color scheme here!
+
+c.  Okay, our graph is looking a bit better -- but we're still missing a title!  Add a title to our plot with the `ggtitle()` function.  All you have to do is add `+ ggtitle("My Title")` to your previous line of code.  Be sure that your title uses proper capitalization, is succinct, and provides a brief description of what the graph shows.  
+
+d.  The graph already has some x- and y-axis labels, but they're kind of boring.  How does `ggplot` choose the default labels?  
+
+e.  Let's change the labels.  Use the `labs()` function to do this.  I recommend using the help documentation for the `labs()` function to figure out how it works.  (Hint:  Specify the `x` and `y` arguments.)  Be sure that your labels describe what is being displayed on each axis.
+
+f.  Okay, now we have a pretty nice graph.  Let's describe it for someone who isn't as familiar with the data as we are.  Describe the distribution you see in your bar chart.  Which airline was the subject of the most tweets?  Which airline was the subject of the fewest tweets?  Which airlines were the subject of a similar number of tweets?  From the graph, roughly how many tweets were about Virgin America in our dataset?
+
+g.  In part (a) (and throughout our ever-growing line of code to create this graphic), `+ coord_cartesian()` tells `ggplot` to make this plot in the cartesian (x-y) plane.  What would happen if we used a different coordinate system?  Try changing `coord_cartesian()` to `coord_polar()`.  Be sure to adjust the title and axis labels as necessary.  What happens?  (Note:  This is called a rose diagram -- we'll learn more about these on Monday.)
+
+h.  Which graph do you like better -- the graph in (f), or the graph in (g)?  There is not necessarily a right answer here (yet); just be sure to justify your choice.  Which graph is easier to read?  In which graph is it easier to discern the differences amongst the categories?  In which graph is it easier to estimate the exact number of tweets that mention each airline?
+
+
+#  Problem 4
+
+**Repeat Problem 3 with the `airline_sentiment` Variable**
+
+a.  (20 points)  Create a bar chart that shows the distribution of the `airline_sentiment` variable in our `airline_tweets` dataset.  The x-axis should show the unique values of `airline_sentiment`.  The y-axis should show the overall frequency of that sentiment in the dataset.  Use a different color for each sentiment, and include a legend.  Give the graph an appropriate title and appropriate x- and y-axis labels.  Which sentiments was the most common?  Which were the least common?
+
+b.  (15 points)  Create a rose diagram for the `airline_sentiment` variable.  Which graph do you prefer -- the bar chart or the rose diagram?  Why?  Justify your choice.
+
+
+#  Problem 5
+
+(BONUS:  5 points)  
+
+**2-Dimensional Categorical Data**
+
+Next week, we'll cover the visualization of 2-dimensional categorical data.  If you're feeling ambitious, however, you can try to do this with our `airline` and `airline_sentiment` variables here.
+
+Re-create the graph from problem 3, part (f), except instead of giving each bar a unique color corresponding to the airline, fill in each airline's bar with multiple colors -- proportional to the frequency of positive, neutral, and negative tweets about that particular airline.
+
+Hint:  This is easier to do than it sounds with `ggplot`.
+
+Note:  The instructor and TAs are not allowed to help you with bonus problems!  
