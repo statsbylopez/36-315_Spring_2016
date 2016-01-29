@@ -1,0 +1,128 @@
+---
+title: "36-315 Lab 03"
+author: "Your Name Here"
+date: "Due Friday, January 29, 2016 (6:30pm)"
+output: html_document
+---
+
+#  Lab 03:  1-D and 2-D Categorical Data; Incorporating Statistical Information
+
+##  Furthering Our Analysis Twitter Airline Sentiment Data
+
+***General instructions for labs***: 
+
++  Use this file as the template for your lab submission.  Delete the unecessary text (e.g. this text, the problem statements, etc).  That said, keep the nicely formatted "Problem 1", "Problem 2", "a.", "b.", etc
++  Upload two things:  (1) an `R` Markdown file (named as:  [AndrewID]-[Lab02].Rmd -- e.g. "sventura-Lab02.Rmd"), and (2) the corresponding .html file generated from `R` Markdown (named as:  [AndrewID]-[Lab02].html -- e.g. "sventura-Lab02.html") to Blackboard in the Lab 02 submission section on Blackboard.  You are also welcome to upload a single .zip file containing both of these.
++  Your file should contain the code to answer each question in its own code block.  Your code should produce plots that will be automatically embedded in the output (.html) file
++  Each answer must be supported by written statements (unless otherwise specified)
++  Include the name of anyone you collaborated with at the top of the lab assignment
++  Include the style guide you used at the top of the lab assignment
+
+
+Today's lab will cover both 1-D and 2-D categorical data.  We will also begin incorporating statistical information into our graphics.
+
+
+#  Problem 1
+
+(5 points each)
+
+**Incorporating Statistical Information**:  
+
+Bar charts are usually easier to read than spine charts, pie charts, and rose diagrams.  That said, there are several ways we can add useful information to bar charts.
+
+Load the Twitter / Airline Sentiment data and the `airline` variable from Lab02 and Homework02.  
+
+```{r}
+library(ggplot2)
+airline_tweets <- read.csv("https://dl.dropboxusercontent.com/u/18473260/Tweets.csv")
+```
+
+a.  Create a bar chart with properly labeled axes and a descriptive title.  Don't specify `stat="count"` or `stat="bin"` in your call to `geom_bar()`, since `geom_bar()` will choose the appropriate statistic by default.
+
+b.  Now, run a chi-square test on the `airline` variable (see Lecture04Demo.R on Blackboard for how to do this).  What information does the `chisq.test` function output?
+
+c.  Discuss your graph in the context of the chi-square test you ran.  Comment on whether you think the proportions of observations in each category are equal across the category, using the statistical information you found from the chi-square test.  What was the null hypothesis of your test?  What was the alternative?  Remember, if your p-value is less than an appropriate alpha-level, you can conclude that you should reject the null hypothesis at that alpha-level.
+
+
+#  Problem 2
+
+**Reordering the Bars**
+
+By default, `R` orders the categories of a categorical variable alphabetically in a bar chart.  What if we wanted to order them, instead, by count?
+
++  Get the counts using the `table()` function.  See the example code below.  You do not need to edit this part of the code.
++  In `R`, most datasets we'll work with are stored in objects called `data.frame`s.  Create a new `data.frame` with two columns:  `counts` and `airline`.  See the example code below for how to do this.  You do not need to edit this part of the code.
++  Recreate the bar chart from problem 1, but using the `new_data_frame` instead of the original `airline_tweets` data frame.  This is partially complete for you already.  Remember to add some labels and a title to the graph.  Change the color to something other than the default dark gray (your choice).  Store this graph as its own object, but do not plot it yet.  Notice that we use `stat="identity"` here, since the counts are already calculated, and we just have to plot them on the y-axis (which is why we specify `y = counts`).
++  Now, create a new graph (in the same code block) that reorders the bars in **increasing** order of the counts.  See `help(reorder)` for more information on how to do this.  Store this graph as an `R` object, but do not plot it yet.  An example of how to do this is provided below.
++  Now, create a new graph (in the same code block) that reorders the bars in **decreasing** order of the counts.  See `help(reorder)` for more information on how to do this.  Store this graph as an `R` object, but do not plot it yet.
++  Plot all three graphs at once.  Arrange these graphs into a nicely formatted grid.  See the Homework 01 solutions for how to do this -- you'll need the `gridExtra` library and the `grid.arrange()` function.
+
+```{r}
+tab <- table(airline_tweets$airline)
+counts <- as.integer(tab)
+airline_names <- names(tab)
+new_data_frame <- data.frame(counts = tab, airline = airline_names)
+ggplot(data = new_data_frame, aes(x = airline, y = counts)) + geom_bar(stat="identity")
+
+#  Example of how to reorder the bars:
+ggplot(data = new_data_frame, aes(x = reorder(airline, counts), y = counts)) + geom_bar(stat="identity")
+```
+
+
+#  Problem 3
+
+(5 points each)
+
+**Incorporating Statistical Information Into Graphs**
+
+Using the same set-up as Problem 2, we'll add some additional information to `new_data_frame`:
+
+```{r}
+tab <- table(airline_tweets$airline)
+counts <- as.integer(tab)
+airline_names <- names(tab)
+N <- sum(counts)
+proportions <- counts / N
+percentages <- proportions * 100
+std_error <- sqrt(proportions * (1 - proportions) / N)  #  See notes from Wednesday
+
+#  Lower bound of an (approximate) 95% confidence interval around the true proportion in each category
+lower <- proportions - 1.96 * std_error  
+
+#  Upper bound of an (approximate) 95% confidence interval around the true proportion in each category
+upper <- proportions + 1.96 * std_error
+
+new_data_frame <- data.frame(counts = counts, airline = airline_names, 
+                             proportions = proportions, percentages = percentages,
+                             std_error = std_error, upper = upper, lower = lower)
+```
+
+a.  Make a bar chart of the percentages and a bar chart of the proportions.  Arrange these into a 1x2 grid (1 row, 2 columns).  Make sure the graphs are properly labeled/titled.  What is the difference between these two graphs?
+b.  Add error bars to the proportions graph.  To do this, use the `geom_errorbar()` function, and be sure to specify the `ymin` and `ymax` parameters.  E.g., `ggplot(...) + ... + geom_errorbar(aes(ymin = ..., ymax = ...))`.  Are the proportions of tweets about American and US Airways significantly different?
+
+
+#  Problem 4
+
+(10 points)
+
+**Flipping a bar chart**
+
++  Recreate the graph from Problem 1.
++  Create a second graph, flipping the axes so that you have horizontal bars instead of vertical bars.  See `help(coord_flip)` for more on how to do this.
++  Make sure the second graph is properly labeled/titled.
++  Arrange these graphs into a nicely formatted grid.  See the Homework 01 solutions for how to do this -- you'll need the `gridExtra` library and the `grid.arrange()` function.
+
+Which version of the bar chart do you prefer?  There is not necessarily a right answer; just be sure to justify your choice.
+
+
+#  Problem 5
+
+**2-D Bar Charts**
+
+a.  Recreate the graph from problem 1, but color each bar by the `airline_sentiment` variable.  As always, make sure your graph is properly labeled/titled/colored and has a legend.
+b.  Where on the graph would we find the (empirical) conditional distribution of `airline_sentiment` given that our `airline` is US Airways?
+c.  Create a new graph that shows the conditional distribution of `airline` given `airline_sentiment`.  That is, you should now have three vertical bars, each of which is colored by the `airline` variable.
+d.  Create a side-by-side version of the chart in (c).  To do this, specify `position = position_dodge()` in your call to `geom_bar()`.  This tells `ggplot` to reposition the bars to be side-by-side.
+e.  Which graph to you prefer -- the graph in (c), or the graph in (d)?  Why?  Discuss the advantages and disadvantages of both.
+
+
