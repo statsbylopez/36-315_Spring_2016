@@ -99,6 +99,7 @@ airline_tweets &lt;- read.csv(&quot;https://dl.dropboxusercontent.com/u/18473260
 </div>
 <div id="problem-2" class="section level1">
 <h1>Problem 2</h1>
+<p>(30 points)</p>
 <p><strong>Reordering the Bars</strong></p>
 <p>By default, <code>R</code> orders the categories of a categorical variable alphabetically in a bar chart. What if we wanted to order them, instead, by count?</p>
 <ul>
@@ -121,7 +122,7 @@ ggplot(data = new_data_frame, aes(x = reorder(airline, counts), y = counts)) + g
 </div>
 <div id="problem-3" class="section level1">
 <h1>Problem 3</h1>
-<p>(5 points each)</p>
+<p>(10 points each)</p>
 <p><strong>Incorporating Statistical Information Into Graphs</strong></p>
 <p>Using the same set-up as Problem 2, we’ll add some additional information to <code>new_data_frame</code>:</p>
 <pre class="r"><code>tab &lt;- table(airline_tweets$airline)
@@ -149,7 +150,7 @@ new_data_frame &lt;- data.frame(counts = counts, airline = airline_names,
 <div id="problem-4" class="section level1">
 <h1>Problem 4</h1>
 <p>(10 points)</p>
-<p><strong>Flipping a bar chart</strong></p>
+<p><strong>Flipping a Bar Chart</strong></p>
 <ul>
 <li>Recreate the graph from Problem 1.</li>
 <li>Create a second graph, flipping the axes so that you have horizontal bars instead of vertical bars. See <code>help(coord_flip)</code> for more on how to do this.</li>
@@ -160,7 +161,8 @@ new_data_frame &lt;- data.frame(counts = counts, airline = airline_names,
 </div>
 <div id="problem-5" class="section level1">
 <h1>Problem 5</h1>
-<p><strong>2-D Bar Charts</strong></p>
+<p>(5 points each)</p>
+<p><strong>2-D Bar Charts and (Empirical) Conditional Distributions</strong></p>
 <ol style="list-style-type: lower-alpha">
 <li>Recreate the graph from problem 1, but color each bar by the <code>airline_sentiment</code> variable. As always, make sure your graph is properly labeled/titled/colored and has a legend.</li>
 <li>Where on the graph would we find the (empirical) conditional distribution of <code>airline_sentiment</code> given that our <code>airline</code> is US Airways?</li>

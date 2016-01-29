@@ -46,6 +46,8 @@ c.  Discuss your graph in the context of the chi-square test you ran.  Comment o
 
 #  Problem 2
 
+(30 points)
+
 **Reordering the Bars**
 
 By default, `R` orders the categories of a categorical variable alphabetically in a bar chart.  What if we wanted to order them, instead, by count?
@@ -71,7 +73,7 @@ ggplot(data = new_data_frame, aes(x = reorder(airline, counts), y = counts)) + g
 
 #  Problem 3
 
-(5 points each)
+(10 points each)
 
 **Incorporating Statistical Information Into Graphs**
 
@@ -105,7 +107,7 @@ b.  Add error bars to the proportions graph.  To do this, use the `geom_errorbar
 
 (10 points)
 
-**Flipping a bar chart**
+**Flipping a Bar Chart**
 
 +  Recreate the graph from Problem 1.
 +  Create a second graph, flipping the axes so that you have horizontal bars instead of vertical bars.  See `help(coord_flip)` for more on how to do this.
@@ -117,7 +119,9 @@ Which version of the bar chart do you prefer?  There is not necessarily a right 
 
 #  Problem 5
 
-**2-D Bar Charts**
+(5 points each)
+
+**2-D Bar Charts and (Empirical) Conditional Distributions**
 
 a.  Recreate the graph from problem 1, but color each bar by the `airline_sentiment` variable.  As always, make sure your graph is properly labeled/titled/colored and has a legend.
 b.  Where on the graph would we find the (empirical) conditional distribution of `airline_sentiment` given that our `airline` is US Airways?
