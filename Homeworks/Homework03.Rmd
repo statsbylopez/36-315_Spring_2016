@@ -60,15 +60,13 @@ The data is stored in [this Google Sheet](https://docs.google.com/spreadsheets/d
 
 To read it from the Google Sheet automatically into R:
 
-+  First, you'll need the `XML` package.  Install it.
-+  Second, you'll need to download the `google-sheets-helper-functions.R` file from Blackboard ([source](http://blog.revolutionanalytics.com/2014/06/reading-data-from-the-new-version-of-google-spreadsheets.html)).  Download it and put it in the same working directory as your .Rmd file for this assignment.
-+  Finally, just run the following code:
++  First, you'll need the `gsheet` package.  Install it.
++  Second, just run the following code:
 
 ```{r}
-source("google-sheets-helper-functions.R")
-google_sheet_link <- "https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing"
-raw_sheet_data <- readGoogleSheet(google_sheet_link)
-bike_data <- cleanGoogleTable(raw_sheet_data, table=2, ncols = 15)
+library(gsheet)
+bike_data <- gsheet2tbl("https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing")
+bike_data <- as.data.frame(bike_data)
 ```
 
 a.  (3 points)  How many rows and columns does the dataset have?
