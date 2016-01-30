@@ -58,7 +58,7 @@ In this homework, we'll be working with a dataset from New York City's "Citi Bik
 
 The data is stored in [this Google Sheet](https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing).
 
-To read it from the Google Sheet automatically into R, you'll need the `googlesheets` package.  Install it, and then run the following code:
+To read it from the Google Sheet automatically into R, you'll need the `XML` package.  Install it, and then run the following code:
 
 
 ```{r}
