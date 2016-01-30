@@ -62,12 +62,10 @@ To read it from the Google Sheet automatically into R, you'll need the `googlesh
 
 
 ```{r}
-library(googlesheets)
-
-key <- extract_key_from_url("https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing")
-my_ss <- gs_key(key, visibility = "public")
-bike_data <- gs_read(my_ss)
-bike_data <- as.data.frame(bike_data)
+source("google-sheets-helper-functions.R")
+google_sheet_link <- "https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing"
+raw_sheet_data <- readGoogleSheet(google_sheet_link)
+bike_data <- cleanGoogleTable(raw_sheet_data, table=2, ncols = 15)
 ```
 
 a.  (3 points)  How many rows and columns does the dataset have?
