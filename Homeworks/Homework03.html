@@ -113,15 +113,16 @@ img {
 <p><strong>Reading Data from Google Sheets</strong>:</p>
 <p>In this homework, we’ll be working with a dataset from New York City’s “Citi Bike” program. The dataset contains information about all bike trips in NYC that ended at Central Park West and 72nd St in December 2015.</p>
 <p>The data is stored in <a href="https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing">this Google Sheet</a>.</p>
-<p>To read it from the Google Sheet automatically into R, you’ll need the <code>googlesheets</code> package. Install it, and then run the following code:</p>
-<pre class="r"><code>library(googlesheets)
-key &lt;- extract_key_from_url(&quot;https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing&quot;)
-gap_ss &lt;- gs_key(key)</code></pre>
-<pre><code>## Authentication will not be used.
-## Worksheets feed constructed with public visibility</code></pre>
-<pre class="r"><code>bike_data &lt;- gs_read(gap_ss)</code></pre>
-<pre><code>## Accessing worksheet titled &quot;Sheet1&quot;</code></pre>
-<pre class="r"><code>bike_data &lt;- as.data.frame(bike_data)</code></pre>
+<p>To read it from the Google Sheet automatically into R:</p>
+<ul>
+<li>First, you’ll need the <code>XML</code> package. Install it.</li>
+<li>Second, you’ll need to download the <code>google-sheets-helper-functions.R</code> file from Blackboard (<a href="http://blog.revolutionanalytics.com/2014/06/reading-data-from-the-new-version-of-google-spreadsheets.html">source</a>). Download it and put it in the same working directory as your .Rmd file for this assignment.</li>
+<li>Finally, just run the following code:</li>
+</ul>
+<pre class="r"><code>source(&quot;google-sheets-helper-functions.R&quot;)
+google_sheet_link &lt;- &quot;https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing&quot;
+raw_sheet_data &lt;- readGoogleSheet(google_sheet_link)
+bike_data &lt;- cleanGoogleTable(raw_sheet_data, table=2, ncols = 15)</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>(3 points) How many rows and columns does the dataset have?</li>
 <li>(2 points) What are the column names?</li>

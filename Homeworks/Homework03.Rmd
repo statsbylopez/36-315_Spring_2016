@@ -58,8 +58,11 @@ In this homework, we'll be working with a dataset from New York City's "Citi Bik
 
 The data is stored in [this Google Sheet](https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing).
 
-To read it from the Google Sheet automatically into R, you'll need the `XML` package.  Install it, and then run the following code:
+To read it from the Google Sheet automatically into R:
 
++  First, you'll need the `XML` package.  Install it.
++  Second, you'll need to download the `google-sheets-helper-functions.R` file from Blackboard ([source](http://blog.revolutionanalytics.com/2014/06/reading-data-from-the-new-version-of-google-spreadsheets.html)).  Download it and put it in the same working directory as your .Rmd file for this assignment.
++  Finally, just run the following code:
 
 ```{r}
 source("google-sheets-helper-functions.R")
