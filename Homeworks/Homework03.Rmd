@@ -29,7 +29,7 @@ d.  (5 points)  **Critique the caption and/or surrounding text**.  Does the text
 
 To include an image from the internet in your `R` Markdown output, use the following code (adjust the width and height as necessary):
 
-(Note:  If you're viewing the .html file, you'll see CMU's logo below; the code is in the .Rmd file.)
+(Note:  If you're viewing the .html file, you'll see an image below; the code to render this image is in the .Rmd file.)
 
 <div style="width:400px">
 ![alt text](http://s3.amazonaws.com/media.wbur.org/wordpress/16/files/2012/12/1206_Imagine.jpg)
