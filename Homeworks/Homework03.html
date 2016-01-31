@@ -115,14 +115,12 @@ img {
 <p>The data is stored in <a href="https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing">this Google Sheet</a>.</p>
 <p>To read it from the Google Sheet automatically into R:</p>
 <ul>
-<li>First, you’ll need the <code>XML</code> package. Install it.</li>
-<li>Second, you’ll need to download the <code>google-sheets-helper-functions.R</code> file from Blackboard (<a href="http://blog.revolutionanalytics.com/2014/06/reading-data-from-the-new-version-of-google-spreadsheets.html">source</a>). Download it and put it in the same working directory as your .Rmd file for this assignment.</li>
-<li>Finally, just run the following code:</li>
+<li>First, you’ll need the <code>gsheet</code> package. Install it.</li>
+<li>Second, just run the following code:</li>
 </ul>
-<pre class="r"><code>source(&quot;google-sheets-helper-functions.R&quot;)
-google_sheet_link &lt;- &quot;https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing&quot;
-raw_sheet_data &lt;- readGoogleSheet(google_sheet_link)
-bike_data &lt;- cleanGoogleTable(raw_sheet_data, table=2, ncols = 15)</code></pre>
+<pre class="r"><code>library(gsheet)
+bike_data &lt;- gsheet2tbl(&quot;https://docs.google.com/spreadsheets/d/143-u41MokWNU6w4_hptUypQ_sIc4ZIfEDsABq4MzDhA/edit?usp=sharing&quot;)
+bike_data &lt;- as.data.frame(bike_data)</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>(3 points) How many rows and columns does the dataset have?</li>
 <li>(2 points) What are the column names?</li>
@@ -149,7 +147,7 @@ bike_data &lt;- cleanGoogleTable(raw_sheet_data, table=2, ncols = 15)</code></pr
 <h1>Problem 5</h1>
 <p>(5 points each)</p>
 <p><strong>2-D Bar Charts</strong></p>
-<p>For parts (a) and (b), use the <code>grid.arrange</code> function to arrange your graphs into a 1x2 grid.</p>
+<p>For parts (a) and (b), use the <code>grid.arrange</code> function to arrange your graphs into a 1x2 grid. For all parts, be sure to use the <code>bike_data_no_NA</code> version of our dataset – NOT the subset from the 1960s, 70s, and 80s.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a stacked bar chart that shows the (empirical) conditional distributions of <code>gender</code> given each <code>birth_decade</code>. Be sure to use a proper title, proper labels, and easily understandable and labeled colors. Describe your graph. Which gender is more common? Does this change depending on the decade? Feel free to reference the <a href="http://www.citibikenyc.com/system-data">online Citi Bike documentation</a> to help you decode the genders.</p></li>
 <li><p>Create a side-by-side bar chart that shows the (empirical) conditional distributions of <code>gender</code> given each <code>birth_decade</code>. Be sure to use a proper title, proper labels, and easily understandable and labeled colors. Describe your graph.</p></li>

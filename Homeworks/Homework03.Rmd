@@ -106,7 +106,7 @@ h.  Repeat parts (f) and (g), but using a subset of riders born in the 1960s, 19
 
 **2-D Bar Charts**
 
-For parts (a) and (b), use the `grid.arrange` function to arrange your graphs into a 1x2 grid.
+For parts (a) and (b), use the `grid.arrange` function to arrange your graphs into a 1x2 grid.  For all parts, be sure to use the `bike_data_no_NA` version of our dataset -- NOT the subset from the 1960s, 70s, and 80s.
 
 a.  Create a stacked bar chart that shows the (empirical) conditional distributions of `gender` given each `birth_decade`.  Be sure to use a proper title, proper labels, and easily understandable and labeled colors.  Describe your graph.  Which gender is more common?  Does this change depending on the decade?  Feel free to reference the [online Citi Bike documentation](http://www.citibikenyc.com/system-data) to help you decode the genders.
 
