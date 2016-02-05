@@ -63,7 +63,7 @@ d.  Odds ratios near 1 mean there is no association between the two variables.  
 
 e.  Plot `tab_2x2` using a four fold plot.  Use the function you found in Problem 1(c) to do this.  In your four fold plot, specify new colors for the folds -- the default dark blue vs. light blue is boring.  Look in the help documentation for the four fold plot function to learn how to do this.  Add a title to your graph using the `title()` function.
 
-f.  The radius from the center of the of the plot to the middle ring on each fold is proportional to the square root of the corresponding cell count in the contingency table.  The inner and outer rings correspond to the upper and lower bounds of a 95% confidence interval around the odds ratio.  If the rings overlap when comparing the folds, there is no association.  If they do not overlap, there is an association.  Is there an association between the two variables in this example?  Is the association positive or negative?
+f.  Go the help file for the four fold plot function.  Read the Details section.  How can you use the upper and lower confidence bands to tell if there is an association?  Is there an association between the two variables in this example?  Is the association positive or negative?
 
 
 #  Problem 3
