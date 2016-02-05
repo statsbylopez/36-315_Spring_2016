@@ -1,0 +1,126 @@
+---
+title: "36-315 Lab 04"
+author: "Your Name Here"
+date: "Due Friday, February 5, 2016 (6:30pm)"
+output: html_document
+---
+
+##  Lab 04:  Contingency Tables, Four Fold Plots, and Mosaic Plots
+
+***General instructions for labs***: 
+
++  Use this file as the template for your lab submission.  Delete the unecessary text (e.g. this text, the problem statements, etc).  That said, keep the nicely formatted "Problem 1", "Problem 2", "a.", "b.", etc
++  Upload two things:  (1) an `R` Markdown file (named as:  [AndrewID]-[Lab04].Rmd -- e.g. "sventura-Lab04.Rmd"), and (2) the corresponding .html file generated from `R` Markdown (named as:  [AndrewID]-[Lab04].html -- e.g. "sventura-Lab04.html") to Blackboard in the Lab 04 submission section on Blackboard.  You are also welcome to upload a single .zip file containing both of these.
++  Your file should contain the code to answer each question in its own code block.  Your code should produce plots that will be automatically embedded in the output (.html) file
++  Each answer must be supported by written statements (unless otherwise specified)
++  Include the name of anyone you collaborated with at the top of the lab assignment
++  Include the style guide you used at the top of the lab assignment
+
+
+In today's lab, we will take a brief vacation from `ggplot()` and try out some other graphics packages.
+
+
+#  Problem 1
+
+(5 points each)
+
+**Install `graphics` Package**
+
+Check to see if the `graphics` package is installed on your computer.  To do this, use the `installed.packages()` function.
+
+If it's not installed, install the `graphics` package.  Do this at the command line -- not in your .Rmd file.  
+
+a.  Load the `graphics` package into your workspace with the `library()` function.  Look up the documentation for the `graphics` package with `library(help = graphics)`.  What is the package's full name?  
+
+b.  When was the package built (or last updated)?
+
+c.  In the help documentation, find functions in `graphics` package that can be used to make four fold plots and mosaic plots.  What are these called?
+
+
+#  Problem 2
+
+(5 points each)
+
+**2x2 Contingency Tables and Four Fold Plots**
+
+First, let's generate some random data.
+
+
+```{r}
+var1 <- sample(c("Yes", "No"), 100, replace = T)
+var2 <- sample(c("Yes", "No"), 100, replace = T)
+```
+
+a.  What does the above code do?
+
+b.  Create a 2x2 contingency table of `var1` and `var2` using the `table()` function.  Store it in a variable called `tab_2x2`.  Print the table in your output.  How are the categories of `var1` and `var2` ordered in `tab_2x2`?  Is this different from how they were ordered in lecture?  If so, will this affect our calculation of the odds ratio?
+
+Note:  The `table()` function does not give the marginal distribution of each variable in the table.  You can get the marginal distributions of each variable just typing `table(var1)` or `table(var2)`, as we have done on previous labs and homeworks.
+
+c.  Calculate the odds ratio for this table.  Do this by referencing the cells of the table -- not by hand.  E.g., `tab_2x2[1,2]` will give you the number in the cell in row 1, column 2.
+
+d.  Odds ratios near 1 mean there is no association between the two variables.  Odds ratios below 1 mean there is a negative association.  Odds ratios above 1 mean there is a positive association.  What would you say about the association between `var1` and `var2`?
+
+e.  Plot `tab_2x2` using a four fold plot.  Use the function you found in Problem 1(c) to do this.  In your four fold plot, specify new colors for the folds -- the default dark blue vs. light blue is boring.  Look in the help documentation for the four fold plot function to learn how to do this.  Add a title to your graph using the `title()` function.
+
+f.  The radius from the center of the of the plot to the middle ring on each fold is proportional to the square root of the corresponding cell count in the contingency table.  The inner and outer rings correspond to the upper and lower bounds of a 95% confidence interval around the odds ratio.  If the rings overlap when comparing the folds, there is no association.  If they do not overlap, there is an association.  Is there an association between the two variables in this example?  Is the association positive or negative?
+
+
+#  Problem 3
+
+(5 points each)
+
+**Four Fold Plots on Real Data**
+
+Run the following code to load and manipulate the `cars` dataset.
+
+```{r}
+data(cars)
+cars$speed_binary <- 1 * (cars$speed >= 15)
+cars$dist_binary <- 1 * (cars$dist >= 40)
+#head(cars)
+#dim(cars)
+```
+
+a.  Describe what the above code does.  Describe what the `speed_binary` and `dist_binary` columns of `cars` specify.  When are they 0?  When are they 1?
+
+b.  Create a 2x2 contingency table for the `speed_binary` and `dist_binary` variables.  Calculate the odds ratio for this table as you did in Problem 2.  Is there an association between the two variables?
+
+c.  Create a four fold plot for the `speed_binary` and `dist_binary` variables.  Add a title, and change the colors as you did in Problem 2.  Interpret the plot.  Is there an association between the two variables?  If so, is it positive or negative?  How do you know this?
+
+
+#  Problem 4
+
+(5 points each)
+
+**Mosaic Plots**
+
+Load the MASS library and the Cars93 dataset with the following code:
+
+```{r}
+library(MASS)
+data(Cars93)
+#head(Cars93)
+#dim(Cars93)
+```
+
+Type `help(Cars93)` to learn more about the variables in this dataset.
+
+a.  Create a contingency table of the `DriveTrain` variable (Variable 2) and the `Origin` variable (Variable 1).  Store this in a variable called `tab_origin_drivetrain`.  What are the categories of these two variables?
+
+b.  Perform a chi-square test on this contingency table using the following code:  `chisq.test(tab_origin_drivetrain)`.  What is the test statistic?  How many degrees of freedom are there?  What is the p-value?
+
+c.  What kind of test did we just run?  Consult the help documentation for the `chisq.test` function.  Go to the details section.  Since we have a 2x3 contingency table, the second paragraph describes our test.  What kind of test did we run?  What was the null hypothesis?  
+
+d.  Make a mosaic plot of this contingency table using the function you found in Problem 1(c):  `mosaicplot(tab_origin_drivetrain, main = "Put a Nice Title Here!", xlab = "Var1", ylab = "Var2")`
+
+Adjust the title and axis labels as appropriate.
+
+e.  Which marginal distribution can you find in the graph?  Which conditional distributions can you find in the graph?  See the Lecture notes from Monday for more on mosaic plots.
+
+f.  This plot is boring.  We can add some statistical information to this plot by specifying the `shade = T` argument to the `mosaicplot` function.  Do this.  What changes?
+
+g.  According to the legend that is automatically added to the plot, white cells correspond to standardized Pearson residuals between -2 and 2.  We know that when the standardized residuals are between -2 and 2, the two variables are independent.  Knowing this, what can you say the two variables in this plot?
+
+h.  Create a mosaic plot for the `Origin` and `AirBags` variable.  Interpret the plot.  Are the two variables independent?  If not, what combinations of categories have residuals that are significantly higher or lower than expected?
+
