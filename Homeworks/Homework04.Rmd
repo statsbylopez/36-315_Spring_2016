@@ -1,0 +1,150 @@
+---
+title: "36-315 Homework 04, Spring 2016"
+author: "Your Name Here"
+date: "Due Wednesday, February 10, 2016 (12pm ET) on Blackboard"
+output: html_document
+---
+
+#  Homework 04:  Contingency Tables, Chi-Square Tests, Odds Ratios, Four Fold Plots, Mosaic Plots
+
+##  Bob Ross Guides Us To Understanding Categorical Data
+
+***General instructions for homeworks***: 
+
++  Use this file as the template for your homework submission.  Delete the unecessary text (e.g. this text, the problem statements, etc).  That said, keep the nicely formatted "Problem 1", "Problem 2", "a.", "b.", etc
++  Submit two files to Blackboard:  (1) an `R` Markdown file (named as:  [AndrewID]-HW04.Rmd -- e.g. "sventura-HW04.Rmd"), and (2) the corresponding .html file generated from `R` Markdown (named as:  [AndrewID]-HW04.html -- e.g. "sventura-HW04.html") to Blackboard in the Homework 04 submission section on Blackboard.  You are also welcome to upload a single .zip file containing both of these.
++  Your file should contain the code/commands to answer each question in its own code block; your code should produce plots that will be automatically embedded in the output file
++  Each answer must be supported by written statements (unless otherwise specified)
++  Include the name of anyone you collaborated with at the top of the assignment
++  Include the style guide you used at the top of the assignment
+
+#  Problem 1
+
+**Critiquing Graphs**:
+
+Find a graph from the internet (last 7 days -- e.g. a news article, blog post, etc) or from an academic journal (last 60 days).  Describe and critique your graph:
+
+a.  (5 points)  **Include the graph in your assignment**.  Two choices here:  (1) embed the graph/image in the .html file (see below for instructions) and submit it along with your other files on Blackboard, or (2) include a link to the graph in your answer to this question.
+b.  (5 points)  **Describe the graph**.  What does the graph show?  What variables are plotted on the axes, via color, or via other features of the graph?
+c.  (5 points)  **Critique the graph**.  Does the graph do a good job of achieving its goals?  Does the graph use an unnecessary amount of data ink?  Does the graph distort the actual effect/data/relationship?  What are the strengths and weaknesses (if any) of the graphic?  What would you change (if anything) about this graphic?
+d.  (5 points)  **Critique the caption and/or surrounding text**.  Does the text enhance the user's understanding of the graphic?  What else would you include in the caption/surrounding text to help the viewer understand the graphic?
+
+To include an image from the internet in your `R` Markdown output, use the following code (adjust the width and height as necessary):
+
+(Note:  If you're viewing the .html file, you'll see an image below; the code to render this image is in the .Rmd file.)
+
+<div style="width:400px">
+![alt text](http://s.newsweek.com/sites/www.newsweek.com/files/2014/09/29/1003bobrosstoc.jpg)
+</div>
+
+
+#  Problem 2
+
+(5 points each)
+
+**Comparing Mosaic Plots and Four Fold Plots to Previous Graphics**:  
+
+a.  Mosaic plots are similar to stacked bar charts.  Explain the key differences between the two types of graphs.  Be sure to comment on what types of distributions are displayed, and which pieces of the graph show this information.  Also be sure to comment on the coloring systems.
+
+b.  Four fold plots are similar to rose diagrams.  Explain the key differences between the two types of graphs.  Be sure to comment on what pieces of the graph show what information.
+
+
+#  Problem 3
+
+(30 points)
+
+**Mosaic Plot vs. Stacked Bar Chart vs. Side-by-Side Bar Chart**
+
+Repeat parts (a) and (b) from Problem 6 of Homework 03.  
+
+Now, create a mosaic plot with the same variables from this problem.  Be careful when deciding on the order of the two variables in the mosaic plot!  Your plot should display the same marginal and conditional distributions as the stacked and side-by-side bar charts from HW03, Problem 6, parts (a) and (b).  
+
+Arrange these three graphs into a 3x1 grid (3 rows, 1 column).  Be sure to specify appropriate `fig.width` and `fig.height` options in your R Markdown code chunk so that the graphs look good in the output.
+
+Comment on your graphs.  Describe the (relative) strengths and weaknesses of each.  In which graph is it easiest to see the marginal distribution of the first variable?  In which graph is it easiest to see the conditional distribution of the second variable given the first variable?  In which graph is it easy to see the outcome of a statistical test?  
+
+Overall, which of these graphs do you like the most?  (There is no right answer, but please justify your choice.)  Feel free to say something like "It depends on the purpose for which I am using the graphic", but please explain if you do so!
+
+
+
+#  Problem 4
+
+(5 points each)
+
+**Four Fold Plot vs. Stacked Bar Chart vs. Side-by-Side Bar Chart**
+
+FiveThirtyEight has compiled one of the most valuable datasets of our generation:  A dataset about Bob Ross paintings.  If you don't know who Bob Ross is, see the video [here](https://www.youtube.com/watch?v=0FYfo94qefg).
+
+The dataset has several binary variables.  Each variable indicates whether or not that particular object (e.g. "FENCE") was painted by Bob Ross in each of the 403 paintings in the dataset (1 if included in the painting, 0 otherwise).
+
+Load the data into R directly from GitHub, where the data is hosted.  Take a look at the first few rows of the dataset so you get a feel for how the data is arranged.  (There is no need to print these in your output, however.)
+
+Your friend asks you:  Given that Bob Ross drew a lake, is he more or less likely to also have drawn a mountain?
+
+We'll answer your friend's question in the following problems.
+
+
+```{r}
+bob_ross <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/bob-ross/elements-by-episode.csv")
+#head(bob_ross)
+```
+
+a.  Use the `colSums()` function to find how many times each object appears in the 403 paintings.  Sort the output.  What are the five most common objects in Bob Ross's paintings?  You can use the following code to do this:  `sort(colSums(bob_ross[, -(1:2)]), decreasing = T)`
+
+b.  Create a stacked bar chart showing the marginal distribution of the `LAKE` variable and the conditional distributions of the `MOUNTAIN` variable.  As always, use proper colors, titles, and labels.  Describe your graph.
+
+c.  Repeat (c), but create a side-by-side bar chart instead.  As always, use proper colors, titles, and labels.  Describe your graph.
+
+d.  Create a 2x2 contingency table of the `LAKE` and `MOUNTAIN` variables.  Store the contingency table in an R object called `tab_lake_mountain`.  Use the `rownames()` and `colnames()` functions to rename the categories of the contingency table to something more appropriate, e.g. "Has A Lake" and "Does Not Have A Lake".  `colnames(tab_lake_mountain) <- c("new name 1", "new name 2")`
+
+e.  Create a function called `odds_ratio` that takes as input a 2x2 contingency table and outputs the odds ratio corresponding to that table.   Demonstrate that your `odds_ratio` function works by calculating the odds ratio for `tab_lake_mountain` using both your function and using an approach similar to Lab04.  Do you think there is an association between Bob Ross including lakes and mountains in his paintings?  If so, is it a positive or negative association?
+
+f.  Create a four fold plot of the contingency table.  Be sure to use a proper title, labels, and colors.  Use the `main` argument in the `fourfoldplot` function to include a title on your graph.
+
+g.  Interpret the plot.  Comment on any association you see in the graph.  
+
+h.  Answer your friend's question:  Given that Bob Ross drew a lake, is he more or less likely to also have drawn a mountain?  What evidence do you have for this?
+
+
+
+#  Problem 5
+
+(BONUS:  10 points each)
+
+**Create `ggplot` Versions of Four Fold Plots and Mosaic Plots**
+
+This will be challenging!  Consult Wasserman's R Intro document on Blackboard for more on writing functions.
+
+a.  Write a function, `ggplot_four_fold`, that takes a 2x2 contingency table as input (plus any other necessary inputs) and outputs a `ggplot` object that will display a four fold plot.
+
+  +  The function must use **only** `ggplot()` and its related functions when creating the graph (if other functions are needed to manipulate the data, that is fine)
+  +  The plot should include confidence bands
+  +  The user should have the option to specify a what confidence level (e.g. 0.95) they want for the confidence bands
+  +  The graph should have an appropriate title, labels, etc
+  +  The function should throw an error if the input contingency table is not 2x2 (see `help(stop)` for more)
+
+  
+b.  Write a function, `ggplot_mosaic`, that takes a contingency table as input (plus any other necessary inputs) and outputs a `ggplot` object that will display a mosaic plot.
+
+  +  The function must use **only** `ggplot()` and its related functions
+  +  The function should include the option to color the graph by the standardized Pearson residuals (as with `shade = T` in `mosaicplot`)
+  +  If the above coloring scheme is used, an appropriate legend should be displayed
+  +  The graph should have an appropriate title, labels, etc
+  
+
+#  Problem 6
+
+(BONUS:  1 point)
+
+Watch the video at the link in Problem 4.  What does Bob Ross say from the 24:14 mark to the 24:29 mark?  
+
+This quote happens to also provide great advice when it comes to working in `R`, trying out new functions, and learning new tasks.
+
+Until next week, happy coding!
+
+
+<div style="width:600px">
+![alt text](http://www.azquotes.com/picture-quotes/quote-we-don-t-make-mistakes-just-happy-little-accidents-bob-ross-34-64-84.jpg)
+</div>
+
+
