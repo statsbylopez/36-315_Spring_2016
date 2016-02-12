@@ -1,0 +1,126 @@
+---
+title: "36-315 Lecture 08, Spring 2016"
+author: "Sam Ventura"
+date: "February 8th, 2015"
+output: html_document
+---
+
+#  Interpretting Four Fold Plots and Mosaic Plots
+
+#  Four Fold Plot -- No Association
+
+We might be interested in seeing if there are any characteristics of cars that are more or less prevalent for US vs. non-US cars.  
+
+For example, we might expect that US cars have larger fuel tanks than non-US cars.  Let's explore this graphically with a four fold plot.
+
+```{r}
+library(MASS)
+data(Cars93)
+head(Cars93)
+
+Cars93$fuel_binary <- 1 * (Cars93$Fuel.tank.capacity > 17.5)
+tab <- table(Cars93$Origin, Cars93$fuel_binary)
+colnames(tab) <- c("Fuel Tank <= 17.5 Gallons", "Fuel Tank > 17.5 Gallons")
+fourfoldplot(tab, main = "Four Fold Plot of Car Origin vs. Tank Capacity", col = c("lightblue", "pink"))
+```
+
+There is no assocation between the origin of the car (US vs. non-US) and whether or not the fuel tank is greater than 17.5 gallons.  This is clearly demonstrated in the above four fold plot, where the confidence bands around the odds ratio are overlapping, indicating that there is no evidence to reject the null hypothesis that these two binary variables are independent.
+
+#  Four Fold Plot -- Which Direction Does The Association Go?
+
+Now, let's look at the number of passengers.  
+
+```{r}
+Cars93$Passengers_binary <- 1 * (Cars93$Passengers > 5)
+tab <- table(Cars93$Origin, Cars93$Passengers_binary)
+colnames(tab) <- c("5 or fewer passengers", "6 or more passengers")
+fourfoldplot(tab, main = "Four Fold Plot of Car Origin vs. Number of Passengers", col = c("lightblue", "pink"))
+```
+
+There is a negative association between the car having non-US origin and the number of passengers.  That is, non-US cars are negatively associated with having more passengers.
+
+We could also say the following:
+
+There is a positive association between the car having US origin (vs. not) and the number of passengers (5 or fewer vs. 6 or more).  That is, US cars are positive associated with having more passengers.  
+
+These associations are clearly demonstrated in the above four fold plot, where the 95% confidence bands do not overlap.  This indicates that we can reject the null hypothesis (at the alpha = 0.05 level) that the two variables are independent.
+
+#  Four Fold Plot -- Flipping The Association?!
+
+Next, be careful with your interpretations!  Make sure to have a good understand of what each category of each variable indicates.  For example, I can flip the relationship -- making it look positive -- just by flipping the order of the categories in the contingency table.
+
+```{r}
+Cars93$Passengers_binary <- -1 * (Cars93$Passengers > 5) + 1
+tab <- table(Cars93$Origin, Cars93$Passengers_binary)
+colnames(tab) <- rev(c("5 or fewer passengers", "6 or more passengers"))
+fourfoldplot(tab, main = "Four Fold Plot of Car Origin vs. Number of Passengers", col = c("lightblue", "pink"))
+```
+
+Note that the relationship now looks flipped!  But look at the categories -- they are in a different order.  The association appears to have flipped, but the plot is actually giving the exact same information.
+
+(To help conceptualize this, I flipped the colors in the above plot.)
+
+What does this mean?  **The association should always be stated with respect to the categories!**
+
+#  Mosaic Plot -- No Association
+
+Now let's go beyond 2x2 contingency tables.  Let's look at the origin of the car vs. the drive-train of the car (e.g. four wheel drive).
+
+```{r}
+tab <- table(Cars93$Origin, Cars93$DriveTrain)
+mosaicplot(tab, xlab = "Origin", ylab = "Drive Train", main = "Mosaic Plot of Car Origin vs. Drive Train")
+```
+
+The marginal distribution of the first variable (Origin) is shown with the column widths.  The conditional distribution of the second variable (Drive Train) is shown with the heights of the boxes.  The area of the boxes shows the joint distribution of the two variables (Origin and Drive Train).
+
+Let's add some color to see if there's an association.
+
+```{r}
+tab <- table(Cars93$Origin, Cars93$DriveTrain)
+mosaicplot(tab, xlab = "Origin", ylab = "Drive Train", main = "Mosaic Plot of Car Origin vs. Drive Train", shade = T, las = 1)
+```
+
+**Note that I included `las = 1` in the above plot to rotate the y-axis labels 90 degrees for better readability.
+
+Okay, here's how to read mosaic plots, in general:  
+
++  The colors correspond to the standardized Pearson residuals (see notes from a few lectures ago).
++  Red boxes indicate a large negative deviation from expected in the corresponding cell of the contingency table.
++  Blue boxes indicate a large positive deviation from expected in the corresponding cell of the contingency table.
++  White boxes indicate no deviation from expecte in the corresponding cell of the contingency table.
++  The darker the boxes, the larger the deviation from expected.  Specifically, the light-colored boxes correspond to residuals between 2 and 4 (or -2 and -4).  This means that we can reject the null hypothesis of independence at the alpha = 0.05 level (at least).  The darker boxes correspond to residuals greater than 4 (or less than -4).  This means that we can reject the null hypothesis of independence at the alpha = 0.0001 level (at least).
++  **The cell outlines mean...?**  The cell outlines indicate whether or not the residuals are positive or negative.  This is especially helpfful for the colorblind, who can use this information to determine whether or not a shaded deviation from expected is positive or negative.
+
+
+#  Mosaic Plot -- Associations!
+
+```{r}
+tab <- table(Cars93$Cylinders, Cars93$DriveTrain)
+mosaicplot(tab, xlab = "Number of Cylinders", ylab = "Drive Train", main = "Mosaic Plot of Number of Cylinders vs. Drive Train", shade = T, las = 1)
+```
+
+What's happening here?
+
++  Rear-wheel drive & 8 cylinders has a residual greater than expected (observed count in this cell was higher than expected).
++  Are there any cells with large negative residuals?
++  **When we see a horizontal line in place of a cell, what does this mean?**
+
+
+#  Mosaic Plot -- More Associations!
+
+```{r}
+tab <- table(Cars93$Cylinders, Cars93$Type)
+mosaicplot(tab, xlab = "Number of Cylinders", ylab = "Car Type", main = "Mosaic Plot of Number of Cylinders vs. Car Type", shade = T, las = 1)
+```
+
+**What's happening here?**
+
+
+#  Mosaic Plot -- When Can We Reject The Null Hypothesis?
+
+```{r}
+tab <- table(Cars93$Type, Cars93$DriveTrain)
+mosaicplot(tab, xlab = "Car Type", ylab = "Drive Train", main = "Mosaic Plot of Car Type vs. Drive Train", shade = T, las = 1)
+```
+
+Even if only one cell has a significantly larger or smaller than expected standardized Pearson residual, we can reject the null hypothesis of indepdendence!

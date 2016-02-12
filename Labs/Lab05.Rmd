@@ -1,0 +1,111 @@
+---
+title: "36-315 Lab 05"
+author: "Your Name Here"
+date: "Due Friday, February 12, 2016 (6:30pm)"
+output: html_document
+---
+
+##  Lab 05:  3-Dimensional Categorical Data, Introduction to Coninuous Data
+
+***General instructions for labs***: 
+
++  Use this file as the template for your lab submission.  Delete the unecessary text (e.g. this text, the problem statements, etc).  That said, keep the nicely formatted "Problem 1", "Problem 2", "a.", "b.", etc
++  Upload two things:  (1) an `R` Markdown file (named as:  [AndrewID]-[Lab05].Rmd -- e.g. "sventura-Lab05.Rmd"), and (2) the corresponding .html file generated from `R` Markdown (named as:  [AndrewID]-[Lab05].html -- e.g. "sventura-Lab05.html") to Blackboard in the Lab 05 submission section on Blackboard.  You are also welcome to upload a single .zip file containing both of these.
++  Your file should contain the code to answer each question in its own code block.  Your code should produce plots that will be automatically embedded in the output (.html) file
++  Each answer must be supported by written statements (unless otherwise specified)
++  Include the name of anyone you collaborated with at the top of the lab assignment
++  Include the style guide you used at the top of the lab assignment
+
+
+In today's lab, we will learn some additional `ggplot()` features, visualize higher-dimensional categorical data, and begin to analyze one-dimensional continuous data.
+
+
+#  Problem 1
+
+(5 points each)
+
+**Introducing Facets for Higher-Dimensional Data Visualization**
+
+Facets are used to create multiple versions of the same graph, where each version corresponds to some subset of the full dataset (e.g. the subset corresponding to a particular category of a categorical variable).
+
+Facets are particularly useful when we are working in higher dimensions.  That is, when we are trying to visualize more than just two variables at a time, we can use facets to help.
+
+First, let's generate some random data.
+
+```{r}
+set.seed(315)
+var1 <- sample(c("Yes", "No"), 100, replace = T)
+var2 <- sample(c("Yes", "No"), 100, replace = T)
+var3 <- sample(c("Yes", "No"), 100, replace = T)
+sample_dat <- data.frame(var1, var2, var3)
+```
+
+a.  What does the above code do?
+
+b.  Create a 2x2x2 contingency table of `var1`, `var2`, and `var3` using the `table()` function.  Store it in a variable called `tab_2x2x2`.  Print the table in your output.  How are the categories of `var1`, `var2`, and `var3` organized in `tab_2x2x2`?
+
+c.  Create a stacked bar chart that shows the marginal distribution of `var1` and the conditional distribution of `var2` given `var1`.  Be sure that your graph is properly titled, labeled, and colored.
+
+d.  Look up the help documentation for the `facet_wrap()` function.  Use the `facet_wrap()` function to create two stacked bar charts -- one for each category of `var3`.  To do this, simply add `facet_wrap(~var3)` to your code from part (c).  How does this graph relate to the 2x2x2 contingency table that you created in part (b)?
+
+e.  Create a new variable, `var4`, the same way that `var1`, `var2`, and `var3` were created above.  Add it as a column to your `sample_dat` data frame.  Look up the help documentation for the `facet_grid()` function.  Add the following to your code from part (c):  `facet_grid(var3~var4)`.  What happened?  
+
+f.  Describe the graph that you just created in part (e).  How many variables are included?  Where are each of the variables plotted?  That is, what parts of the graph correspond to which variables?  
+
+This is just a toy example with randomly generated data.  Soon, we'll see how facets can be effectively used for higher-dimensional data visualization.
+
+
+#  Problem 2
+
+(10 points each)
+
+**Introduction to Continuous Data -- Histograms**
+
+Let's work with the `cars` dataset that we used last week.  Load the `cars` dataset.  Feel free to uncomment the other lines of code below to remind yourself what the data looks like, and what we did last week.
+
+```{r}
+data(cars)
+#cars$speed_binary <- 1 * (cars$speed >= 15)
+#cars$dist_binary <- 1 * (cars$dist >= 40)
+#head(cars)
+#dim(cars)
+```
+
+Last week, we created binary categorical variables called `speed_binary` and `dist_binary`.  We did this because we have only worked with categorical variables up until this point, and the `cars` dataset contains only continuous variables.
+
+Now, let's visualize the marginal distributions of these continuous variables.  First, we'll use histograms.  Histograms divide the range of a continuous variable into (usually equal-sized) bins, then count how many observations fall into each one of these bins.  The resulting counts in each bin are displayed in a similar fashion to bar charts.
+
+a.  Create a histogram showing the marginal distribution of the `speed` variable.  Remember, `ggplot()` is flexible:  the way you create a histogram is very similar to how we would create a bar chart with categorical data.  Just add `geom_histogram()` where you would normally have `geom_bar()`.  Be sure that your axes are properly labeled, that your graph has an appropriate title (e.g. "Histogram of Speed in [units]" or "Marginal Distribution of Speed (units)").  Be sure to specify the units where appropriate (e.g. title, labels, legend, etc).  Look at the help file for the `cars` dataset to find information on the units.
+
+b.  Create another histogram of the speed variable, but this time, add the following to your code:  `geom_histogram(breaks=seq(0, 30, by = 3), col="red", fill="green", alpha = .2)`.
+
+    +  What did this change about the graph (aside from the coloring)?
+    +  Try a few new values of the `alpha` parameter.  What are the possible values you can use for `alpha`?  What happens when you decrease `alpha`?  What happens when you increase `alpha`?  What is the default for `alpha` (i.e. if you do not specify it in your code)?
+    +  Type `seq(0, 30, by = 3)` into the command line.  What does the `seq()` function do?
+    
+c.  Create another histogram of the speed variable, but this time, add the following to your code:  `geom_histogram(binwidth = 3)`.  Try a few different values for the `binwidth`.  What does this parameter do?
+
+d.  Create another histogram of the speed variable, but this time, add the following to your code:  `geom_histogram(breaks=c(0, 5, 14, 16, 19, 20, 24, 25), col="red", fill="green")`.  Do your best to describe the distribution of the `speed` variable using this graph.  (Note:  Here, we changed the width of the bins in the histogram.  This makes the graph very confusing for the viewer because of the design variation.  I do not recommend doing this in practice.  That said, it's important that you know that it's possible to do so.)
+
+
+#  Problem 3
+
+(15 points each)
+
+**Introduction to Continuous Data -- Box Plots**
+
+Boxplots show several statistics in one easy to read plot:
+
++  the minimum
++  the maximum
++  the median
++  the 25th percentile (or 1st quartile)
++  the 75th percentile (or 3rd quartile)
++  the inter-quartile range (the space between the 25th and 75th percentiles, or the middle 50% of the data)
++  "outliers", which are defined to be any observations falling outside of the median +/- 1.5 times the inter-quartile range
+
+Now, let's go back to our `cars` dataset and use boxplots to explore it's other variable -- the `dist` variable.
+
+a.  Again using the `cars` dataset, use a boxplot to visualize the marginal distribution of the `dist` variable.  To do this, type `ggplot(data = cars) + aes(factor(1), dist) + geom_boxplot()`.  Add a title and proper labels.  Get rid of the ugly "factor(1)" on the x-axis.  Color the boxplot in CMU red.  See [here to find the CMU hex-color codes](http://www.cmu.edu/marcom/brand-guidelines/print-web-products/web/index.html) (click on Web Colors).  Be sure to specify the units where appropriate (e.g. title, labels, legend, etc).  
+
+b.  Describe the distribution in context.  Demonstrate that you know what the `dist` variable is, and what your graph is showing.  What are some of the strengths of boxplots?  What are some of the weaknesses of boxplots? 

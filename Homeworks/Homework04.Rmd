@@ -55,7 +55,7 @@ b.  Four fold plots are similar to rose diagrams.  Explain the key differences b
 
 **Mosaic Plot vs. Stacked Bar Chart vs. Side-by-Side Bar Chart**
 
-Repeat parts (a) and (b) from Problem 6 of Homework 03.  
+Repeat parts (a) and (b) from Problem 6 of Homework 03.  This time, remove the row where the gender is equal to 0, so that you only have 1s and 2s in your dataset (males and females).  (Note:  This is strictly for the purposes of having cleaner graphs and easier-to-interpret analyses.)
 
 Now, create a mosaic plot with the same variables from this problem.  Be careful when deciding on the order of the two variables in the mosaic plot!  Your plot should display the same marginal and conditional distributions as the stacked and side-by-side bar charts from HW03, Problem 6, parts (a) and (b).  
 
@@ -77,7 +77,7 @@ The dataset has several binary variables.  Each variable indicates whether or no
 
 Load the data into R directly from GitHub, where the data is hosted.  Take a look at the first few rows of the dataset so you get a feel for how the data is arranged.  (There is no need to print these in your output, however.)
 
-Your friend asks you:  Given that Bob Ross drew a lake, is he more or less likely to also have drawn a mountain?
+Your friend asks you:  Is there a positive association between paintings with lakes and paintings with mountains
 
 We'll answer your friend's question in the following problems.
 
@@ -101,7 +101,7 @@ f.  Create a four fold plot of the contingency table.  Be sure to use a proper t
 
 g.  Interpret the plot.  Comment on any association you see in the graph.  
 
-h.  Answer your friend's question:  Given that Bob Ross drew a lake, is he more or less likely to also have drawn a mountain?  What evidence do you have for this?
+h.  Answer your friend's question:  Is there a positive association between paintings with lakes and paintings with mountains?  What evidence do you have for this?
 
 
 
