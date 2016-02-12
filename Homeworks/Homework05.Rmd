@@ -1,13 +1,13 @@
 ---
 title: "36-315 Homework 05, Spring 2016"
 author: "Your Name Here"
-date: "Due Wednesday, February 10, 2016 (12pm ET) on Blackboard"
+date: "Due Wednesday, February 17, 2016 (12pm ET) on Blackboard"
 output: html_document
 ---
 
-#  Homework 05:  Contingency Tables, Chi-Square Tests, Odds Ratios, Four Fold Plots, Mosaic Plots
+#  Homework 05:  Moving from Categorical to Continuous Data
 
-##  Bob Ross Guides Us To Understanding Categorical Data
+##  Exploring Pittsburgh's Bridges with Histograms, Boxplots, Facets, and Themes
 
 ***General instructions for homeworks***: 
 
@@ -88,7 +88,7 @@ e.  Create a histogram of the `when.erected` variable.  Use proper labels/titles
 
 f.  Change the `binwidth` to something more appropriate (e.g. 10), in order to smooth out the distribution.  Describe the marginal distribution of `when.erected`.  In what decades were the most Pittsburgh bridges built?  
 
-g.  Use the `facet_wrap()` or `facet_grid()` functions to visualize the conditional distribution of the `when.erected` variable given material.  Describe any relationship between these two variables that you observe.  
+g.  Use the `facet_wrap()` or `facet_grid()` functions to visualize the conditional distribution of the `when.erected` variable given `material`.  Describe and compare the different conditional distributions of `when.erected` given `material`.  Describe any relationship between these two variables that you observe.  
 
 h.  (BONUS:  2 points)  What local, national, and world events might have contributed to Pittsburgh's increases and decreases in bridge construction since 1800?
 
