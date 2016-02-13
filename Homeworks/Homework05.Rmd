@@ -65,7 +65,7 @@ b.  (5 points)  Describe how you could change boxplots in a way that preserves t
 
 c.  (5 points)  Create a boxplot of the `length` variable from the Pittsburgh Bridges dataset.  Describe any interesting features that you see.  Be sure the graph is properly labeled, titled, and colored.
 
-d.  (5 points)  Now, visualize the conditional distributions of `length` given the `material` variable with side-by-side boxplots.  To do this, use a line of code similar to:  `ggplot(data = pgh_bridges, aes(x = material, y = length)) + geom_boxplot()` (obviously, adding appropriate titles/labels/colors/legends when appropriate).  Describe any interesting features of the conditional distribution of `length`.
+d.  (5 points)  Now, visualize the conditional distributions of `length` given the `material` variable with side-by-side boxplots.  To do this, use a line of code similar to:  `ggplot(data = pgh_bridges, aes(x = material, y = length)) + geom_boxplot()` (obviously, adding appropriate titles/labels/colors/legends when appropriate).  Describe any interesting features of the conditional distribution of `length` given `material`.
 
 e.  (5 points)  Repeat part (d), but use the `type` variable instead of `material` on the x-axis.  
 
@@ -78,7 +78,7 @@ e.  (5 points)  Repeat part (d), but use the `type` variable instead of `materia
 
 a.  Create a histogram of the `length` variable.  Use 20 equally sized bins -- you can specify this with `bins = 20` in your call to `geom_histogram()`.  Be sure that your graph is properly labeled and titled.  
 
-b.  Repeat (a), but this time, in your call to `geom_histogram()`, include `aes(fill=..count..)`.  What does this do to the graph?  
+b.  Repeat part (a), but this time, in your call to `geom_histogram()`, include `aes(fill=..count..)`.  What does this do to the graph?  
 
 c.  Repeat part (b), but this time, add `+ scale_fill_gradient("Legend Label", low = "green", high = "red")` to the line of code.  Use an appropriate legend label.  Try a few different combinations of colors.  What does `scale_fill_gradient()` do?
 
@@ -101,7 +101,7 @@ h.  (BONUS:  2 points)  What local, national, and world events might have contri
 
 Read the documentation on `ggplot` themes [here](http://docs.ggplot2.org/dev/vignettes/themes.html).
 
-Pick one of your graphs from Problem 4, and recreate it with a new theme.  In your new theme, use a whtie background, a different font style, a different font size, a different font color, and any additional changes that you choose.
+Pick one of your graphs from Problem 4, and recreate it with a new theme.  In your new theme, use a white background, a different font style, a different font size, a different font color, and any additional changes that you choose.
 
 Use the example code in the above documentation if you have trouble.
 
@@ -110,6 +110,6 @@ Use the example code in the above documentation if you have trouble.
 
 (BONUS:  2 point)
 
-Please fill out the [early course feedback form] (https://docs.google.com/forms/d/13bEjS4WIs-8iIyHN2f8AEFifdEEg3rZMqKfbtSCAkSw/viewform?usp=send_form).  We are always looking to improve, so we appreciate your feedback.
+Please fill out the [early course feedback form](https://docs.google.com/forms/d/13bEjS4WIs-8iIyHN2f8AEFifdEEg3rZMqKfbtSCAkSw/viewform?usp=send_form).  We are always looking to improve, so we appreciate your feedback.
 
 

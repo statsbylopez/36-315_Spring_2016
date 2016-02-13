@@ -117,7 +117,7 @@ img {
 <li><p>(5 points) What do you think about the definition of outliers in boxplots? (See Lab 05 for details.) Which choices in this definition are arbitrary? Are there any types of distributions for which this definition may not be fair? (Hint: What happens when we make a boxplot of an exponential distribution?)</p></li>
 <li><p>(5 points) Describe how you could change boxplots in a way that preserves their strengths but improves upon their weaknesses. Be creative! (Note: You do not have to actually create this graphic – yet.)</p></li>
 <li><p>(5 points) Create a boxplot of the <code>length</code> variable from the Pittsburgh Bridges dataset. Describe any interesting features that you see. Be sure the graph is properly labeled, titled, and colored.</p></li>
-<li><p>(5 points) Now, visualize the conditional distributions of <code>length</code> given the <code>material</code> variable with side-by-side boxplots. To do this, use a line of code similar to: <code>ggplot(data = pgh_bridges, aes(x = material, y = length)) + geom_boxplot()</code> (obviously, adding appropriate titles/labels/colors/legends when appropriate). Describe any interesting features of the conditional distribution of <code>length</code>.</p></li>
+<li><p>(5 points) Now, visualize the conditional distributions of <code>length</code> given the <code>material</code> variable with side-by-side boxplots. To do this, use a line of code similar to: <code>ggplot(data = pgh_bridges, aes(x = material, y = length)) + geom_boxplot()</code> (obviously, adding appropriate titles/labels/colors/legends when appropriate). Describe any interesting features of the conditional distribution of <code>length</code> given <code>material</code>.</p></li>
 <li><p>(5 points) Repeat part (d), but use the <code>type</code> variable instead of <code>material</code> on the x-axis.</p></li>
 </ol>
 </div>
@@ -127,7 +127,7 @@ img {
 <p><strong>Histograms</strong></p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a histogram of the <code>length</code> variable. Use 20 equally sized bins – you can specify this with <code>bins = 20</code> in your call to <code>geom_histogram()</code>. Be sure that your graph is properly labeled and titled.</p></li>
-<li><p>Repeat (a), but this time, in your call to <code>geom_histogram()</code>, include <code>aes(fill=..count..)</code>. What does this do to the graph?</p></li>
+<li><p>Repeat part (a), but this time, in your call to <code>geom_histogram()</code>, include <code>aes(fill=..count..)</code>. What does this do to the graph?</p></li>
 <li><p>Repeat part (b), but this time, add <code>+ scale_fill_gradient(&quot;Legend Label&quot;, low = &quot;green&quot;, high = &quot;red&quot;)</code> to the line of code. Use an appropriate legend label. Try a few different combinations of colors. What does <code>scale_fill_gradient()</code> do?</p></li>
 <li><p>Create a bar chart of the <code>when.erected</code> variable. Use proper labels/titles/colors.</p></li>
 <li><p>Create a histogram of the <code>when.erected</code> variable. Use proper labels/titles/colors. Using the same approach as we did in lab, specify <code>binwidth = 1</code>. Compare this graph to the graph in (d).</p></li>
@@ -141,13 +141,13 @@ img {
 <p>(5 points)</p>
 <p><strong>Themes in <code>ggplot</code></strong></p>
 <p>Read the documentation on <code>ggplot</code> themes <a href="http://docs.ggplot2.org/dev/vignettes/themes.html">here</a>.</p>
-<p>Pick one of your graphs from Problem 4, and recreate it with a new theme. In your new theme, use a whtie background, a different font style, a different font size, a different font color, and any additional changes that you choose.</p>
+<p>Pick one of your graphs from Problem 4, and recreate it with a new theme. In your new theme, use a white background, a different font style, a different font size, a different font color, and any additional changes that you choose.</p>
 <p>Use the example code in the above documentation if you have trouble.</p>
 </div>
 <div id="problem-6" class="section level1">
 <h1>Problem 6</h1>
 <p>(BONUS: 2 point)</p>
-<p>Please fill out the [early course feedback form] (<a href="https://docs.google.com/forms/d/13bEjS4WIs-8iIyHN2f8AEFifdEEg3rZMqKfbtSCAkSw/viewform?usp=send_form" class="uri">https://docs.google.com/forms/d/13bEjS4WIs-8iIyHN2f8AEFifdEEg3rZMqKfbtSCAkSw/viewform?usp=send_form</a>). We are always looking to improve, so we appreciate your feedback.</p>
+<p>Please fill out the <a href="https://docs.google.com/forms/d/13bEjS4WIs-8iIyHN2f8AEFifdEEg3rZMqKfbtSCAkSw/viewform?usp=send_form">early course feedback form</a>. We are always looking to improve, so we appreciate your feedback.</p>
 </div>
 
 
