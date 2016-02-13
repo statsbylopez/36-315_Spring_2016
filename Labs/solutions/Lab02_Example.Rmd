@@ -1,0 +1,157 @@
+---
+title: "36-315 Lab 02"
+author: "Your Name Here"
+date: "Due Friday, January 22, 2016 (6:30pm)"
+output: html_document
+---
+
+#  Lab 02:  1-Dimensional Categorical Data
+
+##  Analyzing Twitter Airline Sentiment Data with `ggplot`
+
+***General instructions for labs***: 
+
+
+
+#  Problem 1
+
+(10 points)
+
+**First Steps in Data Analysis**:  
+
+
+```{r, cache = T}
+library(ggplot2)
+#airline_tweets=read.csv("lab02.csv")
+airline_tweets=read.csv("https://dl.dropboxusercontent.com/u/18473260/Tweets.csv") #The link doesn't work again :(
+attach(airline_tweets)
+nrow(airline_tweets)
+ncol(airline_tweets)
+head(airline_tweets)
+```
+
+There are 14640 rows and 15 columns. The categorical variables are airline_sentiment,  negativereason, airline, name, tweet_location, and user timezone. The continuous variables are tweet_id, airline sentiment confidence, retweet count. The ordered categorical variables are airline_sentiment. 
+
+
+#  Problem 2
+
+**Exploratory Data Analysis -- Part 1 -- Examining Categorical Variables**
+
+a.  (5 points)  How many unique values of these two variables are there?  What are the unique values?
+
+```{r}
+unique(airline_tweets$airline)
+unique(airline_tweets$airline_sentiment)
+```
+
+There are 6 different types of values of airline: Virgin America, United, Southwest, Delta, US Airways, and American. There are 3 different types of values for airline sentiment: neutral, positive, negative.
+
+
+b.  (10 points)  How many of each unique value are there?  To find this out, use the `table()` function, which counts the number of times each category appears in a vector.
+
+```{r}
+table(airline_tweets$airline)
+table(airline_tweets$airline_sentiment)
+```
+
+There are 2759 values of American, 2222 valus of Delta, 2420 values of Southwest, 3822 values of United, 2913 values of US Airways, and 504 values of Virgin America. In addition, there are 9178 negative, 3099 neutral, and 2363 positive values.
+
+
+
+#  Problem 3
+
+(5 points each)
+
+**Exploratory Data Analysis -- Part 2 -- Visualizing Cateogical Variables**
+
+a.  Create a bar chart that shows the distribution of the number times was each airline mentioned in our `airline_tweets` dataset.
+
+```{r}
+airline_dist_plot <- ggplot(data = airline_tweets, aes(x=airline))
+airline_dist_plot + geom_bar(stat = "count") + coord_cartesian()
+```
+
+
+b.  That graph is okay, but let's add a little color.  
+
+```{r}
+airline_dist_plot + geom_bar(stat = "count") + coord_cartesian() + aes(fill = airline)
+```
+
+c.  Okay, our graph is looking a bit better -- but we're still missing a title!  Add a title to our plot with the `ggtitle()` function.  
+
+```{r}
+airline_dist_plot + geom_bar(stat = "count") + coord_cartesian() + aes(fill = airline)+ ggtitle("Frequency of Tweets Per Airline")
+```
+
+d.  The graph already has some x- and y-axis labels, but they're kind of boring.  How does `ggplot` choose the default labels?  
+
+ggplot chooses default labels by just naming the x and y axis by the name of the variables we are using. In this case, we used the variable airline. Since this is a frequency plot, ti automatically just used count for ht y-axis.
+
+e.  Let's change the labels.  Use the `labs()` function to do this.
+
+```{r}
+airline_dist_plot + geom_bar(stat = "count") + coord_cartesian() + aes(fill = airline)+ ggtitle("Frequency of Tweets Per Airline")+xlab("Airline Name")+ylab("Number of Times Airline was Mentioned")
+```
+
+I changed the x and y axes to names that were a little more specific.
+
+
+f.  Okay, now we have a pretty nice graph.  Let's describe it for someone who isn't as familiar with the data as we are.
+
+United Airlines was subject of the most tweets, while Virgin American was the subject of the fewest tweets. Delta+Southwest and American+US Airways were the subject of a similar number of tweets. Looking at the graph, approximately 500 tweets were about Virgin America. 
+
+g.  What would happen if we used a different coordinate system?  Try changing `coord_cartesian()` to `coord_polar()`.  
+
+```{r}
+airline_dist_plot + geom_bar(stat = "count") + coord_polar() + aes(fill = airline)+ ggtitle("Frequency of Tweets Per Airline") + ylab("") + xlab("")
+```
+
+The new graph looks more like a pie chart than a bar graph. It looks more difficult to read. 
+
+
+h.  Which graph do you like better -- the graph in (f), or the graph in (g)?
+
+I like the graph in f better because it is much easier to read. Because the graph in g is more round, it is harder to discern the differences among categories. It is not clear that the first white line represents 1000, etc. Thus, it is easier to esstimate the exact number of tweets in the first graph. The graph in f is simpler in general.
+
+
+#  Problem 4
+
+**Repeat Problem 3 with the `airline_sentiment` Variable**
+
+a.  (20 points)  Create a bar chart that shows the distribution of the `airline_sentiment` variable in our `airline_tweets` dataset.
+
+
+```{r}
+airline_sentiment_dist_plot <- ggplot(data = airline_tweets, aes(x=airline_sentiment))
+airline_sentiment_dist_plot + geom_bar(stat = "count") + coord_cartesian() + aes(fill = airline_sentiment)+ ggtitle("Frequency of Tweets With Each Sentiment")+xlab("Sentiment")+ylab("Number of Tweets Expressing Each Sentiment")
+```
+
+The sentiment that is most common is negative, which makes sense as people are more likely to express their feelings if they are upset about something. Neutral and positive comments were the least common. Positive is the least common, which is interesting.
+
+
+b.  (15 points)  Create a rose diagram for the `airline_sentiment` variable.  Which graph do you prefer -- the bar chart or the rose diagram?
+
+```{r}
+airline_sentiment_dist_plot + geom_bar(stat = "count") + coord_polar() + aes(fill = airline_sentiment)+ ggtitle("Frequency of Tweets With Each Sentiment") + xlab("") + ylab("")
+```
+
+I prefer the bar graph because, once again, it is much easier to read and understand. It takes a few seconds to understand the rose plot, but maybe that is because we have just had more experience with bar plots. However, this rose plot is better than the last one because you can see clearly how many more tweets expressed negative sentiments than positive and neutral due to the "large pie slice."
+
+
+
+#  Problem 5
+
+(BONUS:  5 points)  
+
+**2-Dimensional Categorical Data**
+
+Re-create the graph from problem 3, part (f), except instead of giving each bar a unique color corresponding to the airline, fill in each airline's bar with multiple colors -- proportional to the frequency of positive, neutral, and negative tweets about that particular airline.
+
+```{r}
+airline_dist_plot2 <- ggplot(data = airline_tweets, aes(x=airline))
+airline_dist_plot2 + geom_bar(stat = "count") + coord_cartesian() + aes(fill = airline_sentiment)+ ggtitle("Frequency of Tweets With Each Sentiment For Each Airline")+xlab("Airline Name")+ylab("Number of Tweets Expressing Each Sentiment ")
+```
+
+I actually did this by accident when I was trying to do number 4 oops :)
+

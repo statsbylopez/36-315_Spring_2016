@@ -1,0 +1,202 @@
+---
+title: "36-315 Lab 03"
+author: "Anonymous"
+date: "Due Friday, January 29, 2016 (6:30pm)"
+output: html_document
+---
+
+#  Lab 03:  1-D and 2-D Categorical Data; Incorporating Statistical Information
+
+##  Furthering Our Analysis Twitter Airline Sentiment Data
+
+#  Problem 1
+
+(5 points each)
+
+**Incorporating Statistical Information**:  
+
+```{r}
+library(ggplot2)
+airline_tweets <- read.csv("https://dl.dropboxusercontent.com/u/18473260/Tweets.csv")
+```
+
+##a.
+```{r}
+#  Bar Plot on Tweet Counts for each Airlines
+airline.bar <- ggplot(data = airline_tweets, aes(x = airline)) + 
+               geom_bar(fill = "blue") + ggtitle("Bar Graph for Tweets for each Airline") +
+               xlab("Airline") + ylab("Tweet Counts")
+airline.bar
+```
+
+##b.
+```{r}
+#  Chi-sq Test on Airline Variable
+chisq.test(table(airline_tweets$airline))
+```
+  
+  The chisq.test function returns the Chi-squared test for the input variable. X-squared, degrees of freedom, and p-value related to the input variable.
+  
+##c.  
+The bar graph demonstrates that the total count of tweets in each category are not all equal across the category. For example, there is a clear difference between the total number of tweets for United airline and Virgin American Airline. The null hypothesis of the chi-squared test is that the proportion of each categories are same. The alternative hypothesis is that at least one category is different from another. Since our p-value from the chi-squared test is 2.2e-16, which incredibly close to 0, we reject the null hypothesis that the proportion of each categories are the same. This is true for all the conventional alpha levels : 0.01, 0.05, etc. This matches with the bar graph we have created because it is clear that United airline has so much more total number of tweets than Virgin America.
+
+#  Problem 2
+
+(30 points)
+
+**Reordering the Bars**
+
+```{r, fig.height = 4, fig.width = 15}
+library(gridExtra)
+tab <- table(airline_tweets$airline)
+counts <- as.integer(tab)
+airline_names <- names(tab)
+new_data_frame <- data.frame(counts = tab, airline = airline_names)
+
+#  Original Graph
+airline.no.ord <- ggplot(data = new_data_frame, aes(x = airline, y = counts)) +
+                  geom_bar(stat="identity", fill = "purple") + 
+                  ggtitle("Total Tweets For Airlines") + 
+                  xlab("Airline") + ylab("Total Tweet Counts")
+
+#  Increasing Order of counts
+airline.increasing.ord <- ggplot(data = new_data_frame, 
+                                 aes(x = reorder(airline, counts), y = counts)) +  
+                          geom_bar(stat="identity", fill = "red") + 
+                          ggtitle("Total Tweets For Airlines in Increasing Order") + 
+                          xlab("Airline") + ylab("Total Tweet Counts")
+
+#  Decreasing Order of counts
+airline.decreasing.ord <- ggplot(data = new_data_frame, 
+                                 aes(x = reorder(airline, -counts), y = counts)) +         
+                          geom_bar(stat="identity", fill = "pink") + 
+                          ggtitle("Total Tweets For Airlines in Decreasing Order") +
+                          xlab("Airline") + ylab("Total Tweet Counts")
+
+grid.arrange(airline.no.ord, 
+             airline.increasing.ord, 
+             airline.decreasing.ord, ncol = 3)
+```
+
+
+#  Problem 3
+
+(10 points each)
+
+**Incorporating Statistical Information Into Graphs**
+
+```{r}
+tab <- table(airline_tweets$airline)
+counts <- as.integer(tab)
+airline_names <- names(tab)
+N <- sum(counts)
+proportions <- counts / N
+percentages <- proportions * 100
+std_error <- sqrt(proportions * (1 - proportions) / N)  #  See notes from Wednesday
+
+#  Lower bound of an (approximate) 95% confidence interval around the true proportion in each category
+lower <- proportions - 1.96 * std_error  
+
+#  Upper bound of an (approximate) 95% confidence interval around the true proportion in each category
+upper <- proportions + 1.96 * std_error
+
+new_data_frame <- data.frame(counts = counts, airline = airline_names, 
+                             proportions = proportions, percentages = percentages,
+                             std_error = std_error, upper = upper, lower = lower)
+```
+
+##a.
+```{r, fig.height = 4, fig.width = 10}
+#  Bar Graph in Percentage
+airline.perc.bar <- ggplot(data = new_data_frame, aes(x = airline, y = percentages)) +
+                    geom_bar(stat = "identity", fill = "purple") +
+                    ggtitle("Percentage of Tweets for each Airline") + xlab("Airline") +
+                    ylab("Percentage(%) of Tweets")
+#  Bar Graph in Proportion
+airline.prop.bar <- ggplot(data = new_data_frame, aes(x = airline, y = proportions)) +
+                    geom_bar(stat = "identity", fill = "pink") +
+                    ggtitle("Proportion of Tweets for each Airline") + xlab("Airline") +
+                    ylab("Proportion of Tweets")
+
+#  Gridding the Two Bar Graphs Together
+grid.arrange(airline.perc.bar, airline.prop.bar, ncol = 2)
+```
+
+The only difference between these two graphs are the y-axis labels and their units. The graph on the left denotes the percentage(%) of tweets for each airlines while the graph on the right denotes the proportion of tweets for each airlines.
+
+##b.
+```{r}
+#  Adding ErrorBounds to the Bar Graph
+airline.bar.err <- ggplot(data = new_data_frame, aes(x = airline, y = proportions)) +
+                   geom_bar(stat = "identity", fill = "pink") +
+                   ggtitle("Proportion of Tweets for each Airline") + xlab("Airline") +
+                   ylab("Proportion") + geom_errorbar(aes(ymin = lower, ymax = upper))
+
+airline.bar.err
+```
+
+The proportions of tweets about American and US Airways are not significantly different. On the bar graph above including the confidence interval, the heights of the two bars are not too different. There are sections where the two intervals overlap. Thus, the proportions of tweets about American and US Airways are not significantly different.
+
+#  Problem 4
+
+(10 points)
+
+**Flipping a Bar Chart**
+
+```{r, fig.height = 5, fig.width = 10}
+#  Bar Graph from Question 1 Flipped
+airline.bar.flip <- airline.bar + coord_flip()
+                    
+grid.arrange(airline.bar, airline.bar.flip, ncol = 2)
+```
+
+I perfer the flipped bar graph because it is easier to visualize each category names. Since all the category names were horizontally placed in the original bar graph, it was a little difficult to read the names of each airlines. However after flipping the axes, since all the names are placed vertically it is much easier to find each categories.
+
+#  Problem 5
+
+(5 points each)
+
+**2-D Bar Charts and (Empirical) Conditional Distributions**
+
+##a.
+```{r}
+#  Bar Graph for Airline Tweets Colored based on Airline Sentiment
+airline.bar.color <- ggplot(data = airline_tweets, aes(x = airline)) + 
+                     geom_bar() + aes(fill =  airline_sentiment) +
+                     ggtitle("Bar Graph for Airline Sentiment Conditional on Airline") +
+                     xlab("Airline") + ylab("Counts")
+    
+airline.bar.color
+```
+
+##b.
+On the bar for US Airways we can see that there are three colors. The proportion of each categories, negative, neutral, positive, conditional on US Airways are depicted on the US Airways bar by different heights of colors. If we take a look at the distribution of the heights of each colors we can find the empirical conditional distribution of airline sentiment given that the airline is US Airways.
+
+##c.  
+```{r}
+#  Bar Graph for Sentiment Colored based on Airline Type
+sentiment.bar.airline <- ggplot(data = airline_tweets, 
+                                aes(x = airline_sentiment)) +
+                         geom_bar() + 
+                         ggtitle("Bar Graph for Airline Conditional on Airline Sentiment") +
+                         xlab("Airline Sentiment") + ylab("Total Count") +
+                         aes(fill = airline)
+
+sentiment.bar.airline
+```
+
+##d.  
+```{r}
+#  Side-by-side Bar Graph for Sentiment Colored based on Airline Type
+sentiment.side.bar.airline <-  ggplot(data = airline_tweets, 
+                                      aes(x = airline_sentiment)) +
+                               geom_bar(position = position_dodge()) + 
+                               ggtitle("Bar Graph for Airline Conditional on Airline Sentiment") +
+                               xlab("Airline Sentiment") + ylab("Total Count") +
+                               aes(fill = airline)
+
+sentiment.side.bar.airline
+```
+
+##e.  
+I prefer the graph in (d) just because I can compare the total count of airline sentiment categories for each airlines. However, the graph in (d) is much more difficult to visualize the distribution of sentiment for all the airlines. On the other hand graph in (c) is much easier to visualize the distribution of sentiment categories for all the airlines. However, since the counts of airline sentiments for each airlines are stacked up on top of each other, it is hard to compare one airline's particular sentiment to the other.
