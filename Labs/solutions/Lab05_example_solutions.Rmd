@@ -1,0 +1,183 @@
+---
+title: "36-315 Lab 04"
+author: "Anonymous"
+date: "Due Friday, February 5, 2016 (6:30pm)"
+output: html_document
+---
+
+##  Lab 04:  Contingency Tables, Four Fold Plots, and Mosaic Plots
+
+
+#  Problem 1
+ 
+
+a. 
+
+```{r}
+library(graphics)
+```
+
+The R Graphics Package
+
+b.  
+
+It was last updated August 16, 2015
+
+c.
+
+fourfoldplot and mosaicplot
+
+#  Problem 2
+
+
+
+```{r,}
+set.seed(100)
+var1 <- sample(c("Yes", "No"), 100, replace = T)
+var2 <- sample(c("Yes", "No"), 100, replace = T)
+```
+
+a. 
+
+It creates two variables with 100 observations each of either "Yes" or "No". The "Yes" and "No" observations were selected randomly.  The default method in the `sample()` function does this with equal probability (0.5) for all (2) categories.
+
+b.
+
+```{r}
+tab_2x2 <- table(var1, var2)
+tab_2x2
+```
+The table is ordered No-Yes for Var 1 and No-Yes for Var 2. In lecture, it was Yes-No for both variables. This doesn't affect our calculation of the odds ratio, you just have to be aware that the variable categories are ordered differently, since this could change the interpretation of the odds ratio and association.
+
+
+c. 
+
+```{r}
+(tab_2x2[2,2]/tab_2x2[2,1])/(tab_2x2[1,2]/tab_2x2[1,1])
+```
+
+d. 
+
+There looks like there is a small positive association between var 1 and var 2. However, the odds ratio is somewhat close to 1, so a statistical test would give us more definitive information.
+
+e. 
+
+```{r}
+fourfoldplot(tab_2x2, color = c("Red", "Blue"), 
+             main = "Fourfold Plot for Variable 1 and Variable 2")
+```
+
+f.
+
+If the upper and lower bounds of the confidence intervals do not overlap, we have reason to believe there is a significant association between the variables. In this example, we see that the confidence intervals do overlap, thus we expect there to be no association between the two variables.
+
+
+#  Problem 3
+
+
+```{r}
+data(cars)
+cars$speed_binary <- 1 * (cars$speed >= 15)
+cars$dist_binary <- 1 * (cars$dist >= 40)
+#head(cars)
+#dim(cars)
+```
+
+a.
+
+It loads the cars data set and creates two indicator variables. The `speed_binary` variable tells if the car was going greater than or equal to 15 mph. 1 = The car traveled faster than or equal to 15mph and 0 means it traveled less than 15mph. The `dist_binary` tells if the car had traveled greater than or equal to 40 miles. 1 = the car traveled 40 miles or more and 0 means it traveled less than 40 miless.
+
+b.  Create a 2x2 contingency table for the `speed_binary` and `dist_binary` variables.  Calculate the odds ratio for this table as you did in Problem 2.  Is there an association between the two variables?
+
+```{r}
+tab_speed_binary <- table(cars$speed_binary, cars$dist_binary)
+tab_speed_binary
+
+(tab_speed_binary[2,2]/tab_speed_binary[2,1])/(tab_speed_binary[1,2]/tab_speed_binary[1,1])
+```
+
+The odds ratio is 23.33333 and there appears to be a positive association between the two variables.
+
+c.  
+
+```{r}
+fourfoldplot(tab_speed_binary, color = c("Green", "Yellow"),
+             main = "Fourfold Plot for Speed and Distance")
+```
+
+We can see that the confidence intervals do not overlap for the two variables. Based off that and the shape of the plot, we have reason to believe that there is a signficant positive association between speed and distance.  That is, cars travelling at speeds greater than 15 mph are assocated with distances greater than 40 miles.  This, obviously, makes sense in context. 
+
+#  Problem 4
+
+(5 points each)
+
+
+```{r}
+library(MASS)
+data(Cars93)
+#head(Cars93)
+#dim(Cars93)
+```
+
+
+a.  
+
+```{r}
+tab_origin_drivetrain <- table(Cars93$Origin, Cars93$DriveTrain)
+tab_origin_drivetrain
+```
+
+Origin has categories of USA and non-USA. DriveTrain has categories of 4WD ("four wheel drive"), front ("front wheel drive"), and rear ("rear wheel drive").
+
+b.  
+
+```{r}
+chisq.test(tab_origin_drivetrain)
+```
+
+The test statistic is 0.16833 with 2 degrees of freedom.  The corresponding P-value is 0.9193.  This indcates that there is not enough evidence to reject the null hypothesis that the two variables are independent.
+
+
+c.   
+
+We did a Pearson's Chi Squared test. The null is that the joint distribution of the cell counts is equal to the product of the marginal distributions of the rows and the columns.  In other words, the null hypothesis is that the two variables are independent.
+
+d.  
+
+```{r}
+mosaicplot(tab_origin_drivetrain, main = 
+             "Mosaic Plot for Origin and DriveTrain", xlab = 
+             "Origin", ylab = "Drive Train")
+```
+
+e.
+
+The plot shows marginal distribution for Drive Train Type and conditional distribution for Origin of manufacturer.
+
+f. 
+
+```{r}
+mosaicplot(tab_origin_drivetrain, main = 
+             "Mosaic Plot for Origin and DriveTrain", xlab = "Origin", 
+           ylab = "Drive Train", shade = T)
+```
+
+It shows the standardized Pearson residuals for every category combination, colored in white (within two standard deviations from expected), red, and blue (residuals farther than two standard deviations from the mean).  It also creates dotted lines on the chart to indicate if the residuals are positive or negative.
+
+g.
+
+This information tells us if the two variables (DriveTrain and Origin) are independent.  If all of the cells are white, then they are independent.  If at least one cell is not white, then the two variables are not independent.
+
+h.
+
+```{r}
+library(MASS)
+data(Cars93)
+tab_origin_airbags <- table(Cars93$Origin, Cars93$AirBags)
+mosaicplot(tab_origin_airbags, main = "Mosaic Plot for Origin and Airbags", 
+           xlab = "Origin", ylab = "Airbags", shade = T)
+```
+
+The variables do seem to be independent since the residuals are all in the -2 to 2 range. 
+
+
